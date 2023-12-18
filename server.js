@@ -2,11 +2,23 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 
+const Patient = require('./hospitalDb');
+
 app.use(express.json());
 
 //Home route
 app.get('/', (req, res) => {
     res.send("Medical API is running...");
+})
+
+//fetch Hopital patients
+app.get('/patients', async(req, res) => {
+    try{
+        const patients = await Patient.find({});
+        res.status(200).json(patients)
+    } catch(error) {
+        res.status(500).json({message: error.message})
+    }
 })
 
 
